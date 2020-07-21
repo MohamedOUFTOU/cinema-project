@@ -1,6 +1,9 @@
 package com.example.cinemaproject;
 
 import com.example.cinemaproject.entities.Film;
+import com.example.cinemaproject.entities.Salle;
+import com.example.cinemaproject.entities.Seance;
+import com.example.cinemaproject.entities.Ticket;
 import com.example.cinemaproject.services.ICinemaInitServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,7 +25,7 @@ public class CinemaProjectApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        repositoryRestConfiguration.exposeIdsFor(Film.class);
+        repositoryRestConfiguration.exposeIdsFor(Film.class, Salle.class, Ticket.class, Seance.class);
         cinemaInitServices.initVilles();
         cinemaInitServices.initCinemas();
         cinemaInitServices.initSalles();

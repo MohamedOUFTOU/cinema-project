@@ -120,7 +120,7 @@ public class CinemaInitServiceImpl implements ICinemaInitServices{
     public void initFilms() {
         double[] durre = new double[]{1,1.5,2,2.5,3};
         List<Categorie> categories = categorieRepository.findAll();
-        Stream.of("12 Hommes en colere","Forrest Gump","Green Book","La Ligne Verte","Le Parrain","Le Seigneur des anneaux").forEach(filmTitle ->{
+        Stream.of("Transformers","ASHFALL","JUMANJI","THE COMPUS","THE PERFECTDATE").forEach(filmTitle ->{
             Film film = new Film();
             film.setTitre(filmTitle);
             film.setDuree(durre[new Random().nextInt(durre.length)]);
@@ -134,20 +134,20 @@ public class CinemaInitServiceImpl implements ICinemaInitServices{
     @Override
     public void initProjections() {
         double[] prices = new double[]{30, 50, 60, 70,90,100};
+        List<Film> films = filmRepository.findAll();
         villeRepository.findAll().forEach(ville ->{
             ville.getCinemas().forEach(cinema -> {
                 cinema.getSalles().forEach(salle -> {
-                    filmRepository.findAll().forEach(film -> {
+                    int index = new Random().nextInt(films.size());
                         seanceRepository.findAll().forEach(seance -> {
                             Projection projection = new Projection();
                             projection.setDateProjection(new Date());
-                            projection.setFilm(film);
+                            projection.setFilm(films.get(index));
                             projection.setPrix(prices[new Random().nextInt(prices.length)]);
                             projection.setSalle(salle);
                             projection.setSeance(seance);
                             projectionRepository.save(projection);
                         });
-                    });
                 });
             });
         });
@@ -156,8 +156,7 @@ public class CinemaInitServiceImpl implements ICinemaInitServices{
 
     @Override
     public void initTickets() {
-
-        /*projectionRepository.findAll().forEach(projection -> {
+        projectionRepository.findAll().forEach(projection -> {
             projection.getSalle().getPlaces().forEach(place -> {
                 Ticket ticket = new Ticket();
                 ticket.setPlace(place);
@@ -166,7 +165,6 @@ public class CinemaInitServiceImpl implements ICinemaInitServices{
                 ticket.setReserve(false);
                 ticketRepository.save(ticket);
             });
-        });*/
-
+        });
     }
 }
